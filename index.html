@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>MusicWave</title>
+</head>
+<body>
+    <header class="hero">
+        <video autoplay loop muted playsinline class="background-video">
+            <source src="musicbackground.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+         
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <img src="logo.jpg" alt="MusicWave Logo" class="logo">
+            <h1>Welcome to MusicWave</h1>
+            <p>Слушай музыку бесплатно</p>
+
+        <form class="music-search-form" onsubmit="performMusicSearch(event)">
+    <input type="text" id="musicSearchInput" placeholder="🔍 Найти трек, исполнителя, альбом..." required />
+    <button type="submit">🔎</button>
+    <a href="/player.html" class="listen-button">🎧 Слушать сейчас</a>
+</form>
+
+<script>
+function performMusicSearch(event) {
+    // Предотвращаем отправку формы и переход на другую страницу
+    event.preventDefault();
+    
+    const searchTerm = document.getElementById('musicSearchInput').value.toLowerCase().trim();
+    
+    // Находим все секции с исполнителями
+    const artistSections = document.querySelectorAll('.artits > div');
+    
+    // Если поиск пустой - показываем всё
+    if (!searchTerm) {
+        artistSections.forEach(section => {
+            section.style.display = 'block';
+        });
+        return;
+    }
+    
+    let foundAny = false;
+    
+    // Сначала скрываем всё
+    artistSections.forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Ищем совпадения по именам исполнителей
+    document.querySelectorAll('h2').forEach(header => {
+        if (header.textContent.toLowerCase().includes(searchTerm)) {
+            const artistSection = header.closest('.artits');
+            if (artistSection) {
+                artistSection.style.display = 'block';
+                foundAny = true;
+            }
+        }
+    });
+    
+    // Ищем совпадения по названиям песен
+    document.querySelectorAll('audio source').forEach(audio => {
+        const src = audio.getAttribute('src').toLowerCase();
+        if (src.includes(searchTerm)) {
+            const artistSection = audio.closest('.artits');
+            if (artistSection) {
+                artistSection.style.display = 'block';
+                foundAny = true;
+            }
+        }
+    });
+    
+    // Если ничего не найдено
+    if (!foundAny) {
+        alert('Ничего не найдено по запросу: ' + searchTerm);
+        // Показываем всё снова
+        artistSections.forEach(section => {
+            section.style.display = 'block';
+        });
+    }
+}
+
+// Функция для очистки поиска
+function clearSearch() {
+    document.getElementById('musicSearchInput').value = '';
+    const artistSections = document.querySelectorAll('.artits > div');
+    artistSections.forEach(section => {
+        section.style.display = 'block';
+    });
+}
+
+// Также можно добавить поиск при нажатии Enter (на всякий случай)
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('musicSearchInput');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performMusicSearch(e);
+            }
+        });
+    }
+});
+</script>
+
+        </div>
+    </header>
+
+    <main>
+        <section id="hits" class="hits-section">
+            <h2>Хиты 25года</h2>
+        <div class="slider">
+
+    <input type="radio" name="hits-slider" id="hits-radio1" checked>
+    <input type="radio" name="hits-slider" id="hits-radio2">
+    <input type="radio" name="hits-slider" id="hits-radio3">
+    <input type="radio" name="hits-slider" id="hits-radio4">
+    <input type="radio" name="hits-slider" id="hits-radio5">
+    <input type="radio" name="hits-slider" id="hits-radio6">
+    <input type="radio" name="hits-slider" id="hits-radio7">
+
+        <div class="slides">
+        <div class="slide"><img src="hits1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="hits2.jpg" alt="Слайд 2"></div>
+        <div class="slide"><img src="hits3.jpg" alt="Слайд 3"></div>
+        <div class="slide"><img src="hits4.jpg" alt="Слайд 4"></div>
+        <div class="slide"><img src="hits5.jpg" alt="Слайд 5"></div>
+        <div class="slide"><img src="hits6.jpg" alt="Слайд 6"></div>
+        <div class="slide"><img src="hits7.jpg" alt="Слайд 7"></div>
+
+    </div>
+
+    
+    <div class="navigation-manual">
+        <label for="hits-radio1" class="manual-btn"></label>
+        <label for="hits-radio2" class="manual-btn"></label>
+        <label for="hits-radio3" class="manual-btn"></label>
+        <label for="hits-radio4" class="manual-btn"></label>
+        <label for="hits-radio5" class="manual-btn"></label>
+        <label for="hits-radio6" class="manual-btn"></label>
+        <label for="hits-radio7" class="manual-btn"></label>
+    </div>
+</div>
+        </section>
+
+        <section class="artits">
+            <h2>Популярные исполнители</h2>
+            <h2>Bakr</h2>
+
+            <div class="slider">
+
+    <input type="radio" name="bakr-slider" id="bakr-radio1" checked>
+    <input type="radio" name="bakr-slider" id="bakr-radio2">
+    <input type="radio" name="bakr-slider" id="bakr-radio3">
+    <input type="radio" name="bakr-slider" id="bakr-radio4">
+    <input type="radio" name="bakr-slider" id="bakr-radio5">
+    <input type="radio" name="bakr-slider" id="bakr-radio6">
+    <input type="radio" name="bakr-slider" id="bakr-radio7">
+    <input type="radio" name="bakr-slider" id="bakr-radio8">
+
+    <div class="slides">
+        <div class="slide"><img src="bakr1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="bakr2.jpg" alt="Слайд 2"></div>
+        <div class="slide"><img src="bakr3.jpg" alt="Слайд 3"></div>
+        <div class="slide"><img src="bakr4.jpg" alt="Слайд 4"></div>
+        <div class="slide"><img src="bakr5.jpg" alt="Слайд 5"></div>
+        <div class="slide"><img src="bakr6.jpg" alt="Слайд 6"></div>
+        <div class="slide"><img src="bakr7.jpg" alt="Слайд 7"></div>
+        <div class="slide"><img src="bakr8.jpg" alt="Слайд 8"></div>
+    </div>
+
+    <div class="navigation-manual">
+        <label for="bakr-radio1" class="manual-btn"></label>
+        <label for="bakr-radio2" class="manual-btn"></label>
+        <label for="bakr-radio3" class="manual-btn"></label>
+        <label for="bakr-radio4" class="manual-btn"></label>
+        <label for="bakr-radio5" class="manual-btn"></label>
+        <label for="bakr-radio6" class="manual-btn"></label>
+        <label for="bakr-radio7" class="manual-btn"></label>
+        <label for="bakr-radio8" class="manual-btn"></label>
+        </div>
+        </div>
+        
+        <div class="artits-tracks">
+            <h2>Песни Bakr</h2>
+
+            <p>Бедный поэт</p>
+            <audio controls>
+                <source src="Bakr бедный поэт.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Вредина</p>
+            <audio controls>
+                <source src="Bakr вредина remix.mp3" type="audio/mpeg">
+            </audio> 
+
+            <p>Эталон красоты</p>
+            <audio controls>
+                <source src="Bakr эталон красоты.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Привет</p>
+            <audio controls>
+                <source src="Bakr привет.mp3" type="audio/mpeg">
+        </div>
+        </section>
+
+        <section class="artits">
+            <h2>HammAli And Navai</h2>
+
+            <div class="slider">
+
+    <input type="radio" name="han-slider" id="han-radio1" checked>
+    <input type="radio" name="han-slider" id="han-radio2">
+    <input type="radio" name="han-slider" id="han-radio3">
+    <input type="radio" name="han-slider" id="han-radio4">
+    <input type="radio" name="han-slider" id="han-radio5">
+    <input type="radio" name="han-slider" id="han-radio6">
+    <input type="radio" name="han-slider" id="han-radio7">
+    <input type="radio" name="han-slider" id="han-radio8">
+
+    <div class="slides">
+        <div class="slide"><img src="han1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="han2.webp" alt="Слайд 2"></div>
+        <div class="slide"><img src="han3.webp" alt="Слайд 3"></div>
+        <div class="slide"><img src="han4.webp" alt="Слайд 4"></div>
+        <div class="slide"><img src="han5.webp" alt="Слайд 5"></div>
+        <div class="slide"><img src="han6.webp" alt="Слайд 6"></div>
+        <div class="slide"><img src="han7.webp" alt="Слайд 7"></div>
+        <div class="slide"><img src="han8.webp" alt="Слайд 8"></div>
+        </div>
+             
+
+            <div class="navigation-manual">
+        <label for="han-radio1" class="manual-btn"></label>
+        <label for="han-radio2" class="manual-btn"></label>
+        <label for="han-radio3" class="manual-btn"></label>
+        <label for="han-radio4" class="manual-btn"></label>
+        <label for="han-radio5" class="manual-btn"></label>
+        <label for="han-radio6" class="manual-btn"></label>
+        <label for="han-radio7" class="manual-btn"></label>
+        <label for="han-radio8" class="manual-btn"></label>
+        </div>
+        </div>
+
+        <div class="artits-tracks">
+            <h2>Песни HammAli And Navai</h2>
+
+            <p>Птичка</p>
+            <audio controls>
+                <source src="Han птичка.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Пустите меня на танцпол</p>
+            <audio controls>
+                <source src="Han танцпол.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Химия</p>
+            <audio controls>
+                <source src="Han химия.mp3" type="audio/mpeg">
+                </audio>
+        </div>
+        </section>
+
+        <section class="artits">
+            <h2>Scriptonit</h2>
+            <div class="slider">
+
+    <input type="radio" name="scriptonit-slider" id="scriptonit-radio1" checked>
+    <input type="radio" name="scriptonit-slider" id="scriptonit-radio2">
+    <input type="radio" name="scriptonit-slider" id="scriptonit-radio3">
+    <input type="radio" name="scriptonit-slider" id="scriptonit-radio4">
+    <input type="radio" name="scriptonit-slider" id="scriptonit-radio5">
+    <input type="radio" name="scriptonit-slider" id="scriptonit-radio6">
+
+    <div class="slides">
+        <div class="slide"><img src="scriptonit1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="scriptonit2.jpg" alt="Слайд 2"></div>
+        <div class="slide"><img src="scriptonit3.jpg" alt="Слайд 3"></div>
+        <div class="slide"><img src="scriptonit4.jpg" alt="Слайд 4"></div>
+        <div class="slide"><img src="scriptonit5.jpg" alt="Слайд 5"></div>
+        <div class="slide"><img src="scriptonit6.jpg" alt="Слайд 6"></div>
+        </div>
+
+        <div class="navigation-manual">
+        <label for="scriptonit-radio1" class="manual-btn"></label>
+        <label for="scriptonit-radio2" class="manual-btn"></label>
+        <label for="scriptonit-radio3" class="manual-btn"></label>
+        <label for="scriptonit-radio4" class="manual-btn"></label>
+        <label for="scriptonit-radio5" class="manual-btn"></label>
+        <label for="scriptonit-radio6" class="manual-btn"></label>
+        </div>
+        </div>
+
+        <div class="artits-tracks">
+            <h2>Песни Scriptonit</h2>
+
+            <p>Чистый</p>
+            <audio controls>
+                <source src="scriptonit чистый .mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Талия</p>
+            <audio controls>
+                <source src="scriptonit талия .mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Slow mo</p>
+            <audio controls>
+                <source src="scriptonit slow mo.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Space Girl</p>
+            <audio controls>
+                <source src="scriptonit space girl.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+       <section class="artits">
+            <h2>Xcho</h2>
+            <div class="slider">
+
+                    <input type="radio" name="xcho-slider" id="xcho-radio1" checked>
+    <input type="radio" name="xcho-slider" id="xcho-radio2">
+    <input type="radio" name="xcho-slider" id="xcho-radio3">
+    <input type="radio" name="xcho-slider" id="xcho-radio4">
+    <input type="radio" name="xcho-slider" id="xcho-radio5">
+    <input type="radio" name="xcho-slider" id="xcho-radio6">
+    <input type="radio" name="xcho-slider" id="xcho-radio7">
+    <input type="radio" name="xcho-slider" id="xcho-radio8">
+
+    <div class="slides">
+        <div class="slide"><img src="xcho1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="xcho2.jpg" alt="Слайд 2"></div>
+        <div class="slide"><img src="xcho3.jpg" alt="Слайд 3"></div>
+        <div class="slide"><img src="xcho4.webp" alt="Слайд 4"></div>
+        <div class="slide"><img src="xcho5.jpg" alt="Слайд 5"></div>
+        <div class="slide"><img src="xcho6.webp" alt="Слайд 6"></div>
+        <div class="slide"><img src="xcho7.jpg" alt="Слайд 7"></div>
+        <div class="slide"><img src="xcho8.jpg" alt="Слайд 8"></div>
+        </div>
+
+                <div class="navigation-manual">
+        <label for="xcho-radio1" class="manual-btn"></label>
+        <label for="xcho-radio2" class="manual-btn"></label>
+        <label for="xcho-radio3" class="manual-btn"></label>
+        <label for="xcho-radio4" class="manual-btn"></label>
+        <label for="xcho-radio5" class="manual-btn"></label>
+        <label for="xcho-radio6" class="manual-btn"></label>
+        <label for="xcho-radio7" class="manual-btn"></label>
+        <label for="xcho-radio8" class="manual-btn"></label>
+        </div>
+        </div>
+
+        <div class="artits-tracks">
+            <h2>Песни Xcho</h2>
+
+            <p>Балада</p>
+            <audio controls>
+                <source src="Xcho балада.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Мир на двоих</p>
+            <audio controls>
+                <source src="Xcho мир на двоих.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Эскикзы</p>
+            <audio controls>
+                <source src="Xcho эскизы.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Only You</p>
+            <audio controls>
+                <source src="Xcho Only you.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+        <section class="artits">
+            <h2>Jah Khalib</h2>
+            <div class="slider">
+
+    <input type="radio" name="jah-slider" id="jah-radio1" checked>
+    <input type="radio" name="jah-slider" id="jah-radio2">
+    <input type="radio" name="jah-slider" id="jah-radio3">
+    <input type="radio" name="jah-slider" id="jah-radio4">
+    <input type="radio" name="jah-slider" id="jah-radio5">
+    <input type="radio" name="jah-slider" id="jah-radio6">
+    <input type="radio" name="jah-slider" id="jah-radio7">
+    <input type="radio" name="jah-slider" id="jah-radio8">
+    <input type="radio" name="jah-slider" id="jah-radio9">
+
+    <div class="slides">
+        <div class="slide"><img src="jah1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="jah2.jpg" alt="Слайд 2"></div>
+        <div class="slide"><img src="jah3.jpg" alt="Слайд 3"></div>
+        <div class="slide"><img src="jah4.jpg" alt="Слайд 4"></div>
+        <div class="slide"><img src="jah5.jpg" alt="Слайд 5"></div>
+        <div class="slide"><img src="jah6.jpg" alt="Слайд 6"></div>
+        <div class="slide"><img src="jah7.jpg" alt="Слайд 7"></div>
+        <div class="slide"><img src="jah8.jpg" alt="Слайд 8"></div>
+        <div class="slide"><img src="jah9.jpg" alt="Слайд 9"></div>
+        </div>
+
+                <div class="navigation-manual">
+        <label for="jah-radio1" class="manual-btn"></label>
+        <label for="jah-radio2" class="manual-btn"></label>
+        <label for="jah-radio3" class="manual-btn"></label>
+        <label for="jah-radio4" class="manual-btn"></label>
+        <label for="jah-radio5" class="manual-btn"></label>
+        <label for="jah-radio6" class="manual-btn"></label>
+        <label for="jah-radio7" class="manual-btn"></label>
+        <label for="jah-radio8" class="manual-btn"></label>
+        <label for="jah-radio9" class="manual-btn"></label>
+         </div>
+         </div>
+
+         <div class="artits-tracks">
+            <h2>Песни Jah Khalib</h2>
+
+            <p>Доча</p>
+            <audio controls>
+                <source src="jah доча.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Медина</p>
+            <audio controls>
+                <source src="jah медина.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Лейла</p>
+            <audio controls>
+                <source src="jah лейла.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Искал</p>
+            <audio controls>
+                <source src="Jah искал.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+        <section class="artits">
+            <h2>V$XV & PRICE</h2>
+            <div class="slider">
+                    
+    <input type="radio" name="vp-slider" id="vp-radio1" checked>
+    <input type="radio" name="vp-slider" id="vp-radio2">
+    <input type="radio" name="vp-slider" id="vp-radio3">
+    <input type="radio" name="vp-slider" id="vp-radio4">
+    <input type="radio" name="vp-slider" id="vp-radio5">
+    <input type="radio" name="vp-slider" id="vp-radio6">
+    <input type="radio" name="vp-slider" id="vp-radio7">
+    <input type="radio" name="vp-slider" id="vp-radio8">
+
+    <div class="slides">
+        <div class="slide"><img src="vp1.jpg" alt="Слайд 1"></div>
+        <div class="slide"><img src="vp2.jpg" alt="Слайд 2"></div>
+        <div class="slide"><img src="vp3.jpg" alt="Слайд 3"></div>
+        <div class="slide"><img src="vp4.jpg" alt="Слайд 4"></div>
+        <div class="slide"><img src="vp5.jpg" alt="Слайд 5"></div>
+        <div class="slide"><img src="vp6.jpg" alt="Слайд 6"></div>
+        <div class="slide"><img src="vp7.jpg" alt="Слайд 7"></div>
+        <div class="slide"><img src="vp8.jpg" alt="Слайд 8"></div>
+        </div>
+             
+
+            <div class="navigation-manual">
+        <label for="vp-radio1" class="manual-btn"></label>
+        <label for="vp-radio2" class="manual-btn"></label>
+        <label for="vp-radio3" class="manual-btn"></label>
+        <label for="vp-radio4" class="manual-btn"></label>
+        <label for="vp-radio5" class="manual-btn"></label>
+        <label for="vp-radio6" class="manual-btn"></label>
+        <label for="vp-radio7" class="manual-btn"></label>
+        <label for="vp-radio8" class="manual-btn"></label>
+        </div>
+        </div>
+
+        <div class="artits-tracks">
+            <h2>Песни V$XV & PRICE</h2>
+
+            <p>Солнце</p>
+            <audio controls>
+                <source src="VAP солнце.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>После дождя</p>
+            <audio controls>
+                <source src="VAP после дождя.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Далада</p>
+            <audio controls>
+                <source src="VAP далада.mp3" type="audio/mpeg">
+            </audio>
+
+            <p>Big city</p>
+            <audio controls>
+                <source src="VAP big sity.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+
+<section class="artists-info">
+  <h2>Подробнее об артистах</h2>
+
+  <article class="artist-description">
+    <h3>Bakr</h3>
+    <p>Bakr — популярный исполнитель, известный своими уникальными треками и живыми выступлениями. Его музыка сочетает в себе современные ритмы и глубокие тексты.</p>
+  </article>
+
+  <article class="artist-description">
+    <h3>HammAli and Navai</h3>
+    <p>Дуэт, покоривший миллионы слушателей своими проникновенными песнями и оригинальным стилем. Их треки часто возглавляют чарты.</p>
+  </article>
+
+  <article class="artist-description">
+    <h3>Scriptonit</h3>
+    <p>Scriptonit — один из самых влиятельных исполнителей современности, с уникальным звучанием и харизмой.</p>
+  </article>
+
+  <article class="artist-description">
+    <h3>Jah Khalib</h3>
+    <p>Известный своими мелодичными треками и душевными текстами, Jah Khalib завоевал сердца многих фанатов.</p>
+  </article>
+
+  <article class="artist-description">
+    <h3>V$XV & PRICE</h3>
+    <p>Совместный проект, который привнёс свежий взгляд в музыкальную индустрию и быстро набрал популярность.</p>
+  </article>
+</section>
+
+<section class="playlist">
+  <h2>Топ треков</h2>
+  <ul>
+    <li>Bakr — Трек: Вредина</li>
+    <li>HammAli and Navai — Трек: Пустите меня на танцпол</li>
+    <li>Scriptonit — Трек: Чистый</li>
+    <li>Jah Khalib — Трек: Доча</li>
+    <li>V$XV & PRICE — Трек: Солнце</li>
+  </ul>
+</section>
+
+<section class="about-musicwave">
+  <h2>О MusicWave</h2>
+  <p>MusicWave — твой источник самых свежих хитов и эксклюзивных треков от любимых артистов.</p>
+  <p>Здесь ты можешь не только слушать музыку, но и узнавать всё о исполнителях и новинках.</p>
+</section>
+    </main>
+
+    <footer class="footer">
+    <div class="footer-content">
+
+        <p>© 2025 MusicWave. Все права защищены.</p>
+        <p>Связаться с нами: <a href="mailto:musicwave@gmail.com">musicwave@gmail.com</a></p>
+
+        <div class="footer-socials">
+            <a href="#">Instagram</a> |
+            <a href="#">YouTube</a> |
+            <a href="#">Telegram</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html> 

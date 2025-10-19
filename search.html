@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музыкальный поисковик</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #ff6b6b, #ffa36c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        #searchInput {
+            width: 70%;
+            padding: 15px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        #searchButton {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            background: linear-gradient(90deg, #ff6b6b, #ffa36c);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #searchButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .results-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: #a0a0a0;
+        }
+        
+        .artist-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .artist-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .artist-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+        
+        .artist-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .artist-name {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tracks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .track:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .track audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.5rem;
+            color: #a0a0a0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            #searchInput {
+                width: 90%;
+                border-radius: 50px;
+                margin-bottom: 10px;
+            }
+            
+            #searchButton {
+                width: 90%;
+                border-radius: 50px;
+            }
+            
+            .artist-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .artist-image {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .tracks-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Музыкальный поисковик</h1>
+            <p>Найдите любимых исполнителей и песни</p>
+             <a href="index.html" style="display: inline-block; margin: 20px 0; font-size: 18px; text-decoration: none; color: rgb(255, 255, 255);background: #ec0404;margin-top: 5%; border-radius: 10px; padding: 10px 15px;">
+  ← Вернуться на главную
+</a>
+
+        </header>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Введите имя исполнителя или название песни...">
+            <button id="searchButton">Поиск</button>
+        </div>
+        
+        <div class="results-info" id="resultsInfo">Все исполнители</div>
+        
+        <div id="artistsContainer">
+            <!-- Здесь будут отображаться исполнители и их песни -->
+        </div>
+    </div>
+
+    <script>
+        // Данные исполнителей и их песен
+        const artistsData = [
+            {
+                name: "Raim and Artur",
+                image: "Raim and Artur.webp",
+                tracks: [
+                    "Raim көз корқақ.mp3",
+                    "Raim2.mp3",
+                    "Raim3.mp3",
+                    "Raim4.mp3",
+                    "Raim5.mp3",
+                    "Raim6.mp3",
+                    "Raim7.mp3",
+                    "Raim8.mp3",
+                    "Raim9.mp3",
+                    "Raim10.mp3",
+                    "Raim11.mp3"
+                ]
+            },
+            {
+                name: "Bakr",
+                image: "Bakr logo.jpg",
+                tracks: [
+                    "Bakr бедный поэт.mp3",
+                    "Bakr вредина remix.mp3",
+                    "Bakr За Любовь.mp3",
+                    "Bakr Очи.mp3",
+                    "Bakr привет.mp3",
+                    "Bakr Расстояние.mp3",
+                    "Bakr эталон красоты.mp3"
+                ]
+            },
+            {
+                name: "The Limba",
+                image: "The Limba logo.jpg",
+                tracks: [
+                    "Limba1.mp3",
+                    "Limba2.mp3",
+                    "Limba3.mp3",
+                    "Limba4.mp3",
+                    "Limba5.mp3",
+                    "Limba6.mp3",
+                    "Limba7.mp3",
+                    "Limba8.mp3"
+                ]
+            },
+            {
+                name: "Jony",
+                image: "Jony logo.jpg",
+                tracks: [
+                    "Jony1.mp3",
+                    "Jony2.mp3",
+                    "Jony3.mp3",
+                    "Jony4.mp3",
+                    "Jony5.mp3",
+                    "Jony6.mp3",
+                    "Jony7.mp3",
+                    "Jony8.mp3",
+                    "Jony9.mp3",
+                    "Jony10.mp3",
+                    "Jony11.mp3"
+                ]
+            },
+            {
+                name: "Xcho",
+                image: "Xcho Logo.jpeg",
+                tracks: [
+                    "Xcho Only you.mp3",
+                    "Xcho балада.mp3",
+                    "Xcho мир на двоих.mp3",
+                    "Xcho эскизы.mp3",
+                    "Xcho1.mp3",
+                    "Xcho2.mp3",
+                    "Xcho3.mp3",
+                    "Xcho4.mp3"
+                ]
+            },
+            {
+                name: "V$XV PRINCE",
+                image: "VAP Logo.jpg",
+                tracks: [
+                    "VAP1.mp3",
+                    "VAP2.mp3",
+                    "VAP3.mp3",
+                    "VAP4.mp3",
+                    "VAP5.mp3",
+                    "VAP6.mp3",
+                    "VAP7.mp3",
+                    "VAP далада.mp3",
+                    "VAP любовь.mp3",
+                    "VAP солнце.mp3",
+                    "VAP big sity.mp3"
+                ]
+            },
+            {
+                name: "Jah Khalib",
+                image: "Jah Logo.webp",
+                tracks: [
+                    "Jah1.mp3",
+                    "Jah2.mp3",
+                    "Jah3.mp3",
+                    "Jah4.mp3",
+                    "jah доча.mp3",
+                    "jah медина.mp3",
+                    "Jah искал.mp3",
+                    "jah лейла.mp3"
+                ]
+            }
+        ];
+
+        // Функция для отображения всех исполнителей
+        function displayArtists(artists) {
+            const container = document.getElementById('artistsContainer');
+            container.innerHTML = '';
+            
+            if (artists.length === 0) {
+                container.innerHTML = '<div class="no-results">Ничего не найдено</div>';
+                return;
+            }
+            
+            artists.forEach(artist => {
+                const artistSection = document.createElement('div');
+                artistSection.className = 'artist-section';
+                
+                const artistHeader = document.createElement('div');
+                artistHeader.className = 'artist-header';
+                
+                const artistImage = document.createElement('img');
+                artistImage.className = 'artist-image';
+                artistImage.src = artist.image;
+                artistImage.alt = artist.name;
+                
+                const artistName = document.createElement('h2');
+                artistName.className = 'artist-name';
+                artistName.textContent = artist.name;
+                
+                artistHeader.appendChild(artistImage);
+                artistHeader.appendChild(artistName);
+                
+                const tracksContainer = document.createElement('div');
+                tracksContainer.className = 'tracks-container';
+                
+                artist.tracks.forEach(track => {
+                    const trackElement = document.createElement('div');
+                    trackElement.className = 'track';
+                    
+                    const audioElement = document.createElement('audio');
+                    audioElement.controls = true;
+                    
+                    const sourceElement = document.createElement('source');
+                    sourceElement.src = track;
+                    sourceElement.type = 'audio/mpeg';
+                    
+                    audioElement.appendChild(sourceElement);
+                    trackElement.appendChild(audioElement);
+                    tracksContainer.appendChild(trackElement);
+                });
+                
+                artistSection.appendChild(artistHeader);
+                artistSection.appendChild(tracksContainer);
+                container.appendChild(artistSection);
+            });
+        }
+
+        // Функция для поиска
+        function search() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const resultsInfo = document.getElementById('resultsInfo');
+            
+            if (!searchTerm) {
+                displayArtists(artistsData);
+                resultsInfo.textContent = 'Все исполнители';
+                return;
+            }
+            
+            const filteredArtists = artistsData.map(artist => {
+                const artistMatches = artist.name.toLowerCase().includes(searchTerm);
+                
+                const filteredTracks = artist.tracks.filter(track => 
+                    track.toLowerCase().includes(searchTerm)
+                );
+                
+                // Если имя исполнителя совпадает или есть совпадения в названиях треков
+                if (artistMatches || filteredTracks.length > 0) {
+                    return {
+                        ...artist,
+                        tracks: artistMatches ? artist.tracks : filteredTracks
+                    };
+                }
+                
+                return null;
+            }).filter(artist => artist !== null);
+            
+            displayArtists(filteredArtists);
+            
+            if (filteredArtists.length === 0) {
+                resultsInfo.textContent = 'Ничего не найдено';
+            } else {
+                resultsInfo.textContent = Найдено исполнителей: ${filteredArtists.length};
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            displayArtists(artistsData);
+            
+            // Обработчик для кнопки поиска
+            document.getElementById('searchButton').addEventListener('click', search);
+            
+            // Обработчик для поля ввода (поиск при нажатии Enter)
+            document.getElementById('searchInput').addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    search();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
